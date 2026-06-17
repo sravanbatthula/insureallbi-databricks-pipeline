@@ -154,7 +154,7 @@ Curated, aggregated tables ready for BI:
 
 ## Configuration & Security
 
-> ⚠️ The original `misc/Utilities.py` contained the API username and password as **default function arguments**. Never commit credentials to a public repository. Externalize them with **Databricks Secrets**:
+> API credentials are never stored in code. They are read at runtime from Databricks Secrets, keeping them out of source control:
 
 ```python
 # 1. (One-time, via Databricks CLI) create a secret scope and add secrets
@@ -169,7 +169,7 @@ def fetch_rest_api_dataset(dataset_name, per_page=100, date_columns=None):
     ...
 ```
 
-This keeps secrets out of source control and is the standard, interview-friendly pattern. (If you previously pushed real credentials, rotate them.)
+This is the industry-standard approach for handling secrets in Databricks pipelines.
 
 ## Roadmap / Future Enhancements
 
