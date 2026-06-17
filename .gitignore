@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+
+# Databricks
+.databricks/
+*.dbc
+
+# Secrets & local config — NEVER commit these
+.env
+*.env
+secrets.json
+config.local.*
+*credentials*
+*secret*
+
+# Data & backups (keep large/raw data out of git)
+*.bak
+*.csv
+*.parquet
+*.json.gz
+data/
+DownloadDatabaseBakFile.txt.txt
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Build artifacts
+manifest.mf
+dist/
+build/

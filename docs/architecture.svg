@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 660" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bronze" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#cd7f32"/><stop offset="1" stop-color="#a55f1f"/>
+    </linearGradient>
+    <linearGradient id="silver" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b8bfc7"/><stop offset="1" stop-color="#8b94a0"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e9c43d"/><stop offset="1" stop-color="#c79a16"/>
+    </linearGradient>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="9" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#475569"/>
+    </marker>
+    <style>
+      .h{font-size:20px;font-weight:700;fill:#fff}
+      .sub{font-size:12px;fill:#fff;opacity:.92}
+      .lbl{font-size:12.5px;fill:#1e293b}
+      .tag{font-size:11px;fill:#334155}
+      .title{font-size:26px;font-weight:800;fill:#0f172a}
+      .cap{font-size:13px;fill:#475569}
+      .band{font-size:13px;font-weight:700;fill:#0f172a}
+    </style>
+  </defs>
+
+  <rect width="1180" height="660" fill="#f8fafc"/>
+  <text x="40" y="48" class="title">InsureAllBI — Medallion Lakehouse Architecture</text>
+  <text x="40" y="72" class="cap">REST API ingestion → Bronze → Silver (star schema) → Gold (analytics) on Databricks + Unity Catalog</text>
+
+  <!-- SOURCE -->
+  <rect x="40" y="120" width="150" height="300" rx="12" fill="#1e293b"/>
+  <text x="115" y="150" text-anchor="middle" class="h">REST API</text>
+  <text x="115" y="172" text-anchor="middle" class="sub">WordPress custom</text>
+  <text x="115" y="188" text-anchor="middle" class="sub">endpoints</text>
+  <g font-size="11" fill="#cbd5e1">
+    <text x="60" y="222">• customers</text>
+    <text x="60" y="244">• policies</text>
+    <text x="60" y="266">• claims</text>
+    <text x="60" y="288">• payments</text>
+    <text x="60" y="310">• agents</text>
+    <text x="60" y="332">• countries</text>
+    <text x="60" y="354">• customer_policies</text>
+    <text x="60" y="376">• payment_frequency</text>
+  </g>
+  <text x="115" y="405" text-anchor="middle" class="sub" font-size="10">paginated • Basic Auth • retry</text>
+
+  <!-- BRONZE -->
+  <rect x="240" y="120" width="200" height="300" rx="12" fill="url(#bronze)"/>
+  <text x="340" y="150" text-anchor="middle" class="h">BRONZE</text>
+  <text x="340" y="170" text-anchor="middle" class="sub">Raw / landed Delta</text>
+  <rect x="262" y="190" width="156" height="200" rx="8" fill="#ffffff" opacity=".9"/>
+  <g class="tag"><text x="278" y="214">Ingest as-is from API</text>
+    <text x="278" y="236">Schema enforced via</text>
+    <text x="278" y="252">schema_registry</text>
+    <text x="278" y="276">clean_dataset():</text>
+    <text x="278" y="292">trim • null-standardize</text>
+    <text x="278" y="308">dedupe • date cast</text>
+    <text x="278" y="332">8 Delta tables</text>
+    <text x="278" y="354">insureallBI.bronze.*</text>
+    <text x="278" y="376">+ pipeline run logging</text>
+  </g>
+
+  <!-- SILVER -->
+  <rect x="490" y="120" width="200" height="300" rx="12" fill="url(#silver)"/>
+  <text x="590" y="150" text-anchor="middle" class="h">SILVER</text>
+  <text x="590" y="170" text-anchor="middle" class="sub">Cleansed star schema</text>
+  <rect x="512" y="190" width="156" height="200" rx="8" fill="#ffffff" opacity=".92"/>
+  <g class="tag"><text x="528" y="214" font-weight="700">Dimensions</text>
+    <text x="528" y="232">dimcustomer • dimpolicies</text>
+    <text x="528" y="248">dimagent • dimcountries</text>
+    <text x="528" y="264">dimpaymentfrequency …</text>
+    <text x="528" y="290" font-weight="700">Facts</text>
+    <text x="528" y="308">factclaims • factpayments</text>
+    <text x="528" y="334">MD5 surrogate keys</text>
+    <text x="528" y="350">derived attrs (age, risk,</text>
+    <text x="528" y="366">tenure, region)</text>
+    <text x="528" y="382">incremental MERGE</text>
+  </g>
+
+  <!-- GOLD -->
+  <rect x="740" y="120" width="200" height="300" rx="12" fill="url(#gold)"/>
+  <text x="840" y="150" text-anchor="middle" class="h">GOLD</text>
+  <text x="840" y="170" text-anchor="middle" class="sub">Business analytics</text>
+  <rect x="762" y="190" width="156" height="200" rx="8" fill="#ffffff" opacity=".92"/>
+  <g class="tag"><text x="778" y="214">customer_lifetime_value</text>
+    <text x="778" y="234">policy_profitability</text>
+    <text x="778" y="254">claims_trends</text>
+    <text x="778" y="274">payment_trends</text>
+    <text x="778" y="294">regional_performance</text>
+    <text x="778" y="314">monthly_business_metrics</text>
+    <text x="778" y="334">business_health_metrics</text>
+    <text x="778" y="354">channel / product mix</text>
+    <text x="778" y="378" font-style="italic">KPIs: loss ratio, CAC,</text>
+  </g>
+
+  <!-- BI -->
+  <rect x="990" y="120" width="150" height="300" rx="12" fill="#0f766e"/>
+  <text x="1065" y="150" text-anchor="middle" class="h">BI</text>
+  <text x="1065" y="172" text-anchor="middle" class="sub">Dashboards &amp;</text>
+  <text x="1065" y="188" text-anchor="middle" class="sub">reporting</text>
+  <g font-size="11" fill="#d1fae5">
+    <text x="1010" y="226">• Executive KPIs</text>
+    <text x="1010" y="250">• Fraud signals</text>
+    <text x="1010" y="274">• Retention</text>
+    <text x="1010" y="298">• Profitability</text>
+    <text x="1010" y="322">• 360° customer</text>
+  </g>
+
+  <!-- arrows -->
+  <g stroke="#475569" stroke-width="2.5" fill="none">
+    <line x1="190" y1="270" x2="236" y2="270" marker-end="url(#arrow)"/>
+    <line x1="440" y1="270" x2="486" y2="270" marker-end="url(#arrow)"/>
+    <line x1="690" y1="270" x2="736" y2="270" marker-end="url(#arrow)"/>
+    <line x1="940" y1="270" x2="986" y2="270" marker-end="url(#arrow)"/>
+  </g>
+
+  <!-- cross-cutting bands -->
+  <rect x="240" y="450" width="700" height="50" rx="10" fill="#e2e8f0" stroke="#cbd5e1"/>
+  <text x="590" y="481" text-anchor="middle" class="band">Reusable Utilities — fetch_rest_api_dataset · apply_schema · loadIncrementalData (MERGE) · writeDfToTable · log_pipeline_status</text>
+
+  <rect x="40" y="520" width="1100" height="50" rx="10" fill="#312e81"/>
+  <text x="590" y="551" text-anchor="middle" class="band" fill="#fff">Unity Catalog Governance — catalog: insureallBI  ·  schemas: bronze / silver / gold / logs  ·  Delta Lake (ACID, time travel, schema evolution)</text>
+
+  <text x="40" y="610" class="cap">Engine: Databricks · Apache Spark / PySpark · Spark SQL · Delta Lake</text>
+  <text x="40" y="632" class="cap">Patterns: idempotent incremental loads · centralized schema registry · structured error logging · dimensional modeling</text>
+</svg>
